@@ -12,7 +12,7 @@ import {
   Legend,
   Filler
 } from 'chart.js';
-import { ArrowUp, ArrowDown, Calendar } from 'lucide-react';
+import { ArrowUp, ArrowDown, Calendar, Database } from 'lucide-react';
 import { format } from 'date-fns';
 import DashboardCard from './DashboardCard';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -108,6 +108,11 @@ const InventoryForecast: React.FC<InventoryForecastProps> = ({ forecastData }) =
     },
   };
 
+  // Calculate average daily inventory need
+  const avgDailyInventory = (
+    forecast.reduce((acc, item) => acc + item.recommended_inventory, 0) / forecast.length
+  ).toFixed(2);
+
   return (
     <div className="space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -139,9 +144,7 @@ const InventoryForecast: React.FC<InventoryForecastProps> = ({ forecastData }) =
         
         <DashboardCard
           title="Avg Daily Inventory Need"
-          value={forecast
-            .reduce((acc, item) => acc + item.recommended_inventory, 0) / forecast.length
-            .toFixed(2)}
+          value={avgDailyInventory}
           icon={<Database className="h-6 w-6 text-purple-500" />}
         />
       </div>
