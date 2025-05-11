@@ -144,14 +144,14 @@ const WheatClassifier: React.FC<WheatClassifierProps> = ({ imageUrl, onResult, o
   if (loading) {
     return (
       <div className="flex flex-col items-center justify-center p-8 space-y-4">
-        <div className="w-full max-w-xs bg-gradient-to-r from-indigo-50 to-purple-50 backdrop-blur-lg rounded-lg p-4 border border-indigo-200 shadow-lg">
+        <div className="w-full max-w-xs bg-gradient-to-r from-slate-800 to-slate-900 backdrop-blur-lg rounded-lg p-4 border border-slate-700 shadow-lg">
           <div className="mb-4 flex items-center justify-between">
-            <p className="text-indigo-700 font-medium">{modelStatus}</p>
-            <span className="text-sm font-bold text-indigo-600">{processingProgress}%</span>
+            <p className="text-slate-200 font-medium">{modelStatus}</p>
+            <span className="text-sm font-bold text-slate-100">{processingProgress}%</span>
           </div>
-          <div className="w-full bg-white/50 rounded-full h-2.5">
+          <div className="w-full bg-slate-700/50 rounded-full h-2.5">
             <div 
-              className="h-2.5 rounded-full bg-gradient-to-r from-indigo-500 via-purple-500 to-indigo-500 transition-all duration-300 ease-out"
+              className="h-2.5 rounded-full bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500 transition-all duration-300 ease-out"
               style={{ width: `${processingProgress}%` }}
             ></div>
           </div>
