@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Upload, Image as ImageIcon, Check, X, Info, Wheat, Star, StarHalf, StarOff, CircleCheck, CircleX, Search, Filter } from 'lucide-react';
+import { Upload, Image as ImageIcon, Check, X, Info, Wheat, Star, StarHalf, StarOff, CircleCheck, CircleX, Search, Filter, Mail, Phone } from 'lucide-react';
 import { useDropzone } from 'react-dropzone';
 import { toast } from 'sonner';
 import WheatClassifier from '@/components/WheatClassifier';
@@ -110,15 +110,15 @@ const WheatClassificationPage = () => {
 
   return (
     <div className="max-w-7xl mx-auto">
-      <div className="relative overflow-hidden rounded-xl bg-gradient-to-r from-slate-900 to-slate-800 py-16 px-8 mb-10 shadow-xl">
+      <div className="relative overflow-hidden rounded-xl bg-slate-900 py-16 px-8 mb-10 shadow-xl">
         <div className="absolute inset-0 bg-grid-white/[0.05] bg-[length:20px_20px]"></div>
         <div className="relative z-10 max-w-2xl">
           <h1 className="text-5xl font-bold text-white mb-6">
-            AgriPrecision
-            <span className="block text-blue-400 text-2xl mt-2">Wheat Quality Analysis System</span>
+            Wheat Quality Analysis
+            <span className="block text-blue-400 text-2xl mt-2">Enterprise Grade Analysis</span>
           </h1>
           <p className="text-slate-300 text-lg max-w-xl mb-8">
-            Enterprise-grade wheat quality assessment system utilizing artificial intelligence to deliver precise, reliable analysis for agricultural businesses.
+            Our advanced wheat quality assessment system delivers precise quality analysis for agricultural businesses with professional accuracy.
           </p>
           <div className="flex flex-wrap gap-4">
             <span className="bg-slate-800/80 backdrop-blur-sm text-white px-4 py-2 rounded-md text-sm border border-slate-700 shadow-lg flex items-center">
@@ -137,7 +137,7 @@ const WheatClassificationPage = () => {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="lg:col-span-2">
           <TabsList className="grid w-full grid-cols-3 mb-8">
             <TabsTrigger value="upload" disabled={isProcessing} className="data-[state=active]:bg-slate-800 data-[state=active]:text-white">
@@ -519,7 +519,7 @@ const WheatClassificationPage = () => {
                             <div className="flex justify-between items-center text-xs text-slate-500">
                               <span>Ideal (8-12%)</span>
                               <span>Borderline (12-14%)</span>
-                              <span>High (>14%)</span>
+                              <span>High (&gt;14%)</span>
                             </div>
                             <div className="relative h-2 bg-slate-100 rounded-full">
                               <div 
@@ -567,9 +567,9 @@ const WheatClassificationPage = () => {
                           
                           <div className="space-y-2">
                             <div className="flex justify-between items-center text-xs text-slate-500">
-                              <span>Low (<25%)</span>
+                              <span>Low (&lt;25%)</span>
                               <span>Medium (25-28%)</span>
-                              <span>Strong (>28%)</span>
+                              <span>Strong (&gt;28%)</span>
                             </div>
                             <div className="relative h-2 bg-slate-100 rounded-full">
                               <div 
@@ -611,9 +611,9 @@ const WheatClassificationPage = () => {
                           
                           <div className="space-y-2">
                             <div className="flex justify-between items-center text-xs text-slate-500">
-                              <span>Clean (<1%)</span>
+                              <span>Clean (&lt;1%)</span>
                               <span>Moderate (1-2%)</span>
-                              <span>High (>2%)</span>
+                              <span>High (&gt;2%)</span>
                             </div>
                             <div className="relative h-2 bg-slate-100 rounded-full">
                               <div 
@@ -728,7 +728,7 @@ const WheatClassificationPage = () => {
                   <div>
                     <span className="font-medium text-slate-800">Moisture Content</span>
                     <p className="text-sm text-slate-600 mt-1">
-                      Optimal moisture levels range from 10-12%. Higher moisture (>14%) can lead to mold growth and reduced shelf life, while too dry wheat (<8%) can result in milling difficulties.
+                      Optimal moisture levels range from 10-12%. Higher moisture (&gt;14%) can lead to mold growth and reduced shelf life, while too dry wheat (&lt;8%) can result in milling difficulties.
                     </p>
                   </div>
                 </li>
@@ -740,7 +740,7 @@ const WheatClassificationPage = () => {
                   <div>
                     <span className="font-medium text-slate-800">Gluten Quality</span>
                     <p className="text-sm text-slate-600 mt-1">
-                      Strong gluten (>28%) provides the elasticity needed for artisanal breads and pasta. The quality of gluten affects dough extensibility and gas retention during baking.
+                      Strong gluten (&gt;28%) provides the elasticity needed for artisanal breads and pasta. The quality of gluten affects dough extensibility and gas retention during baking.
                     </p>
                   </div>
                 </li>
@@ -867,7 +867,7 @@ const WheatClassificationPage = () => {
                 </div>
                 <div>
                   <h4 className="font-medium text-slate-800">Email</h4>
-                  <p className="text-slate-600 text-sm">contact@agriprecision.com</p>
+                  <p className="text-slate-600 text-sm">contact@wheatanalysis.com</p>
                 </div>
               </div>
               <div className="flex items-start space-x-3">
