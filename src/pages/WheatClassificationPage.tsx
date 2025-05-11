@@ -115,15 +115,15 @@ const WheatClassificationPage = () => {
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="relative overflow-hidden rounded-xl bg-gradient-to-br from-purple-600 via-indigo-700 to-indigo-900 py-16 px-8 mb-10 shadow-xl"
+        className="relative overflow-hidden rounded-xl bg-gradient-to-br from-fuchsia-600 via-purple-700 to-indigo-900 py-16 px-8 mb-10 shadow-xl"
       >
         <div className="absolute inset-0 bg-grid-white/[0.05] bg-[length:20px_20px]"></div>
         <div className="relative z-10 max-w-2xl">
           <h1 className="text-5xl font-bold text-white mb-6">
             Wheat Quality Analysis
-            <span className="block text-amber-300 text-2xl mt-2">Powered by AI</span>
+            <span className="block text-pink-300 text-2xl mt-2">Powered by AI</span>
           </h1>
-          <p className="text-indigo-100 text-lg max-w-xl mb-8">
+          <p className="text-purple-100 text-lg max-w-xl mb-8">
             Our advanced wheat quality assessment system uses computer vision to analyze and classify wheat samples with professional precision.
           </p>
           <div className="flex flex-wrap gap-4">
@@ -143,7 +143,7 @@ const WheatClassificationPage = () => {
         </div>
         
         {/* Decorative elements */}
-        <div className="absolute top-0 right-0 -mt-20 -mr-20 w-64 h-64 bg-purple-500 rounded-full opacity-40 blur-3xl"></div>
+        <div className="absolute top-0 right-0 -mt-20 -mr-20 w-64 h-64 bg-fuchsia-500 rounded-full opacity-40 blur-3xl"></div>
         <div className="absolute bottom-0 left-0 -mb-20 -ml-20 w-80 h-80 bg-indigo-500 rounded-full opacity-40 blur-3xl"></div>
         <div className="absolute top-1/2 right-20 transform -translate-y-1/2 hidden lg:block">
           <motion.div
@@ -151,7 +151,7 @@ const WheatClassificationPage = () => {
             animate={{ rotate: 5 }}
             transition={{ duration: 2, repeat: Infinity, repeatType: "reverse", ease: "easeInOut" }}
           >
-            <Wheat className="w-24 h-24 text-amber-300/70" />
+            <Wheat className="w-24 h-24 text-pink-300/70" />
           </motion.div>
         </div>
       </motion.div>
@@ -159,13 +159,13 @@ const WheatClassificationPage = () => {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="lg:col-span-2">
           <TabsList className="grid w-full grid-cols-3 mb-8">
-            <TabsTrigger value="upload" disabled={isProcessing} className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-indigo-600 data-[state=active]:to-purple-600 data-[state=active]:text-white">
+            <TabsTrigger value="upload" disabled={isProcessing} className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-600 data-[state=active]:to-fuchsia-600 data-[state=active]:text-white">
               <Upload className="h-4 w-4 mr-2" /> Upload
             </TabsTrigger>
-            <TabsTrigger value="analyze" disabled={!selectedImage || isProcessing} className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-indigo-600 data-[state=active]:to-purple-600 data-[state=active]:text-white">
+            <TabsTrigger value="analyze" disabled={!selectedImage || isProcessing} className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-600 data-[state=active]:to-fuchsia-600 data-[state=active]:text-white">
               <Search className="h-4 w-4 mr-2" /> Analyze
             </TabsTrigger>
-            <TabsTrigger value="results" disabled={!classificationResult} className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-indigo-600 data-[state=active]:to-purple-600 data-[state=active]:text-white">
+            <TabsTrigger value="results" disabled={!classificationResult} className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-600 data-[state=active]:to-fuchsia-600 data-[state=active]:text-white">
               <Check className="h-4 w-4 mr-2" /> Results
             </TabsTrigger>
           </TabsList>
@@ -179,20 +179,20 @@ const WheatClassificationPage = () => {
                   exit={{ opacity: 0, x: -20 }}
                   transition={{ duration: 0.3 }}
                 >
-                  <Card className="bg-gradient-to-br from-white to-indigo-50 border-indigo-100 shadow-md overflow-hidden">
-                    <CardHeader className="bg-indigo-50 border-b border-indigo-100">
-                      <CardTitle className="flex items-center text-indigo-900">
-                        <Wheat className="h-5 w-5 mr-2 text-amber-600" />
+                  <Card className="bg-gradient-to-br from-white to-purple-50 border-purple-100 shadow-md overflow-hidden">
+                    <CardHeader className="bg-purple-50 border-b border-purple-100">
+                      <CardTitle className="flex items-center text-purple-900">
+                        <Wheat className="h-5 w-5 mr-2 text-pink-600" />
                         Upload Wheat Image
                       </CardTitle>
-                      <CardDescription className="text-indigo-700">
+                      <CardDescription className="text-purple-700">
                         Upload a clear image of wheat grains for quality assessment
                       </CardDescription>
                     </CardHeader>
                     <CardContent className="p-6">
                       <div 
                         {...getRootProps()} 
-                        className="border-2 border-dashed border-indigo-300 bg-gradient-to-br from-indigo-50/80 to-purple-50/80 rounded-xl p-10 text-center cursor-pointer hover:bg-indigo-50 transition-colors"
+                        className="border-2 border-dashed border-purple-300 bg-gradient-to-br from-purple-50/80 to-pink-50/80 rounded-xl p-10 text-center cursor-pointer hover:bg-purple-50 transition-colors"
                       >
                         <input {...getInputProps()} />
                         <motion.div 
@@ -205,22 +205,22 @@ const WheatClassificationPage = () => {
                             repeat: Infinity,
                             ease: "easeInOut"
                           }}
-                          className="mx-auto w-24 h-24 rounded-full bg-gradient-to-br from-indigo-500 to-purple-500 flex items-center justify-center mb-4 shadow-lg"
+                          className="mx-auto w-24 h-24 rounded-full bg-gradient-to-br from-purple-500 to-fuchsia-500 flex items-center justify-center mb-4 shadow-lg"
                         >
                           <Upload className="h-12 w-12 text-white" />
                         </motion.div>
-                        <h3 className="text-xl font-semibold text-indigo-800 mb-2">Drop your image here</h3>
-                        <p className="text-indigo-600 font-medium">
+                        <h3 className="text-xl font-semibold text-purple-800 mb-2">Drop your image here</h3>
+                        <p className="text-purple-600 font-medium">
                           or click to browse from your device
                         </p>
-                        <p className="text-sm text-indigo-400 mt-2">
+                        <p className="text-sm text-purple-400 mt-2">
                           Supported formats: JPG, JPEG, PNG
                         </p>
                       </div>
 
                       <div className="mt-10">
-                        <h3 className="text-lg font-medium text-indigo-900 mb-4 flex items-center">
-                          <ImageIcon className="w-5 h-5 mr-2 text-indigo-600" />
+                        <h3 className="text-lg font-medium text-purple-900 mb-4 flex items-center">
+                          <ImageIcon className="w-5 h-5 mr-2 text-purple-600" />
                           Sample Images:
                         </h3>
                         <div className="grid grid-cols-3 gap-4">
@@ -234,7 +234,7 @@ const WheatClassificationPage = () => {
                                 setClassificationResult(null);
                                 setActiveTab("analyze");
                               }}
-                              className="aspect-square rounded-xl overflow-hidden border-2 border-indigo-200 hover:border-indigo-400 transition-colors shadow-md"
+                              className="aspect-square rounded-xl overflow-hidden border-2 border-purple-200 hover:border-purple-400 transition-colors shadow-md"
                             >
                               <img src={image} alt={`Demo wheat ${index + 1}`} className="w-full h-full object-cover" />
                             </motion.button>
@@ -253,20 +253,20 @@ const WheatClassificationPage = () => {
                   exit={{ opacity: 0 }}
                   transition={{ duration: 0.3 }}
                 >
-                  <Card className="bg-gradient-to-br from-white to-indigo-50 border-indigo-100 shadow-md overflow-hidden">
-                    <CardHeader className="bg-indigo-50 border-b border-indigo-100">
-                      <CardTitle className="flex items-center text-indigo-900">
-                        <Search className="h-5 w-5 mr-2 text-indigo-600" />
+                  <Card className="bg-gradient-to-br from-white to-purple-50 border-purple-100 shadow-md overflow-hidden">
+                    <CardHeader className="bg-purple-50 border-b border-purple-100">
+                      <CardTitle className="flex items-center text-purple-900">
+                        <Search className="h-5 w-5 mr-2 text-purple-600" />
                         Analyze Wheat Sample
                       </CardTitle>
-                      <CardDescription className="text-indigo-700">
+                      <CardDescription className="text-purple-700">
                         Review your image and start the quality analysis
                       </CardDescription>
                     </CardHeader>
                     <CardContent className="p-6">
                       {selectedImage && (
                         <div className="space-y-8">
-                          <div className="relative rounded-xl overflow-hidden border-2 border-indigo-200 shadow-lg">
+                          <div className="relative rounded-xl overflow-hidden border-2 border-purple-200 shadow-lg">
                             <img 
                               src={selectedImage} 
                               alt="Selected wheat" 
@@ -277,33 +277,33 @@ const WheatClassificationPage = () => {
                               variant="outline"
                               onClick={handleClearImage}
                             >
-                              <X className="h-5 w-5 text-indigo-700" />
+                              <X className="h-5 w-5 text-purple-700" />
                             </Button>
                           </div>
 
-                          <div className="space-y-6 bg-white rounded-xl p-6 shadow-sm border border-indigo-100">
-                            <h3 className="text-xl font-semibold text-indigo-900 flex items-center">
-                              <Filter className="h-5 w-5 mr-2 text-indigo-600" />
+                          <div className="space-y-6 bg-white rounded-xl p-6 shadow-sm border border-purple-100">
+                            <h3 className="text-xl font-semibold text-purple-900 flex items-center">
+                              <Filter className="h-5 w-5 mr-2 text-purple-600" />
                               Quality Assessment Parameters
                             </h3>
                             
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                              <div className="bg-gradient-to-br from-amber-50 to-amber-100/50 p-4 rounded-lg border border-amber-200">
-                                <h4 className="font-medium text-amber-800 mb-2 flex items-center">
-                                  <Wheat className="h-4 w-4 mr-2 text-amber-600" /> 
+                              <div className="bg-gradient-to-br from-pink-50 to-pink-100/50 p-4 rounded-lg border border-pink-200">
+                                <h4 className="font-medium text-pink-800 mb-2 flex items-center">
+                                  <Wheat className="h-4 w-4 mr-2 text-pink-600" /> 
                                   Kernel Quality
                                 </h4>
                                 <ul className="space-y-1">
-                                  <li className="text-sm text-amber-700 flex items-center">
-                                    <span className="w-1.5 h-1.5 bg-amber-500 rounded-full mr-2"></span>
+                                  <li className="text-sm text-pink-700 flex items-center">
+                                    <span className="w-1.5 h-1.5 bg-pink-500 rounded-full mr-2"></span>
                                     Size consistency
                                   </li>
-                                  <li className="text-sm text-amber-700 flex items-center">
-                                    <span className="w-1.5 h-1.5 bg-amber-500 rounded-full mr-2"></span>
+                                  <li className="text-sm text-pink-700 flex items-center">
+                                    <span className="w-1.5 h-1.5 bg-pink-500 rounded-full mr-2"></span>
                                     Color distribution
                                   </li>
-                                  <li className="text-sm text-amber-700 flex items-center">
-                                    <span className="w-1.5 h-1.5 bg-amber-500 rounded-full mr-2"></span>
+                                  <li className="text-sm text-pink-700 flex items-center">
+                                    <span className="w-1.5 h-1.5 bg-pink-500 rounded-full mr-2"></span>
                                     Surface texture
                                   </li>
                                 </ul>
@@ -380,7 +380,7 @@ const WheatClassificationPage = () => {
                             className="flex justify-center"
                           >
                             <Button 
-                              className="w-full max-w-md py-6 text-lg font-medium bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white shadow-lg" 
+                              className="w-full max-w-md py-6 text-lg font-medium bg-gradient-to-r from-purple-600 to-fuchsia-600 hover:from-purple-700 hover:to-fuchsia-700 text-white shadow-lg" 
                               onClick={handleClassify}
                               disabled={isProcessing}
                             >
@@ -410,7 +410,7 @@ const WheatClassificationPage = () => {
                     exit={{ opacity: 0 }}
                     transition={{ duration: 0.5 }}
                   >
-                    <Card className="bg-gradient-to-br from-white to-indigo-50 border-indigo-100 shadow-md overflow-hidden">
+                    <Card className="bg-gradient-to-br from-white to-purple-50 border-purple-100 shadow-md overflow-hidden">
                       <CardHeader className={`border-b ${
                         classificationResult.className === 'Premium Quality' 
                           ? 'bg-gradient-to-r from-emerald-50 to-emerald-100 border-emerald-200' 
@@ -519,7 +519,7 @@ const WheatClassificationPage = () => {
                         </div>
                         
                         <div className="space-y-4">
-                          <h3 className="text-xl font-semibold text-indigo-900 border-b border-indigo-100 pb-2">Detailed Quality Analysis</h3>
+                          <h3 className="text-xl font-semibold text-purple-900 border-b border-purple-100 pb-2">Detailed Quality Analysis</h3>
                           
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             {/* Protein Content */}
@@ -527,10 +527,10 @@ const WheatClassificationPage = () => {
                               initial={{ x: -20, opacity: 0 }}
                               animate={{ x: 0, opacity: 1 }}
                               transition={{ duration: 0.5, delay: 0.1 }}
-                              className="bg-white rounded-xl p-5 border border-indigo-100 shadow-sm"
+                              className="bg-white rounded-xl p-5 border border-purple-100 shadow-sm"
                             >
                               <div className="flex items-center justify-between mb-4">
-                                <h4 className="font-semibold text-indigo-900">Protein Content</h4>
+                                <h4 className="font-semibold text-purple-900">Protein Content</h4>
                                 <span className={`text-sm font-bold px-2 py-0.5 rounded-full ${
                                   classificationResult.qualityDetails.protein > 12 
                                     ? 'bg-emerald-100 text-emerald-700' 
@@ -551,7 +551,7 @@ const WheatClassificationPage = () => {
                                     initial={{ width: 0 }}
                                     animate={{ width: `${Math.min(100, (classificationResult.qualityDetails.protein / 16) * 100)}%` }}
                                     transition={{ duration: 1 }}
-                                    className="h-2 rounded-full bg-gradient-to-r from-blue-400 to-indigo-600"
+                                    className="h-2 rounded-full bg-gradient-to-r from-blue-400 to-purple-600"
                                   />
                                   <div 
                                     className="absolute h-4 w-1 bg-indigo-900 rounded-full top-1/2 transform -translate-y-1/2"
@@ -576,10 +576,10 @@ const WheatClassificationPage = () => {
                               initial={{ x: 20, opacity: 0 }}
                               animate={{ x: 0, opacity: 1 }}
                               transition={{ duration: 0.5, delay: 0.2 }}
-                              className="bg-white rounded-xl p-5 border border-indigo-100 shadow-sm"
+                              className="bg-white rounded-xl p-5 border border-purple-100 shadow-sm"
                             >
                               <div className="flex items-center justify-between mb-4">
-                                <h4 className="font-semibold text-indigo-900">Moisture Content</h4>
+                                <h4 className="font-semibold text-purple-900">Moisture Content</h4>
                                 <span className={`text-sm font-bold px-2 py-0.5 rounded-full ${
                                   classificationResult.qualityDetails.moisture < 12 
                                     ? 'bg-emerald-100 text-emerald-700' 
@@ -595,7 +595,7 @@ const WheatClassificationPage = () => {
                                 <div className="flex justify-between items-center text-xs text-gray-500">
                                   <span>Ideal (8-12%)</span>
                                   <span>Borderline (12-14%)</span>
-                                  <span>High (>14%)</span>
+                                  <span>High ({">"} 14%)</span>
                                 </div>
                                 <div className="relative h-2 bg-gray-100 rounded-full">
                                   <motion.div 
@@ -635,10 +635,10 @@ const WheatClassificationPage = () => {
                               initial={{ x: -20, opacity: 0 }}
                               animate={{ x: 0, opacity: 1 }}
                               transition={{ duration: 0.5, delay: 0.3 }}
-                              className="bg-white rounded-xl p-5 border border-indigo-100 shadow-sm"
+                              className="bg-white rounded-xl p-5 border border-purple-100 shadow-sm"
                             >
                               <div className="flex items-center justify-between mb-4">
-                                <h4 className="font-semibold text-indigo-900">Gluten Quality</h4>
+                                <h4 className="font-semibold text-purple-900">Gluten Quality</h4>
                                 <span className={`text-sm font-bold px-2 py-0.5 rounded-full ${
                                   classificationResult.qualityDetails.gluten > 28 
                                     ? 'bg-emerald-100 text-emerald-700' 
@@ -650,16 +650,16 @@ const WheatClassificationPage = () => {
                               
                               <div className="space-y-2">
                                 <div className="flex justify-between items-center text-xs text-gray-500">
-                                  <span>Low (<25%)</span>
+                                  <span>Low ({"\<"} 25%)</span>
                                   <span>Medium (25-28%)</span>
-                                  <span>Strong (>28%)</span>
+                                  <span>Strong ({">"} 28%)</span>
                                 </div>
                                 <div className="relative h-2 bg-gray-100 rounded-full">
                                   <motion.div 
                                     initial={{ width: 0 }}
                                     animate={{ width: `${Math.min(100, (classificationResult.qualityDetails.gluten / 35) * 100)}%` }}
                                     transition={{ duration: 1 }}
-                                    className="h-2 rounded-full bg-gradient-to-r from-purple-400 to-purple-600"
+                                    className="h-2 rounded-full bg-gradient-to-r from-fuchsia-400 to-purple-600"
                                   />
                                   <div 
                                     className="absolute h-4 w-1 bg-indigo-900 rounded-full top-1/2 transform -translate-y-1/2"
@@ -684,10 +684,10 @@ const WheatClassificationPage = () => {
                               initial={{ x: 20, opacity: 0 }}
                               animate={{ x: 0, opacity: 1 }}
                               transition={{ duration: 0.5, delay: 0.4 }}
-                              className="bg-white rounded-xl p-5 border border-indigo-100 shadow-sm"
+                              className="bg-white rounded-xl p-5 border border-purple-100 shadow-sm"
                             >
                               <div className="flex items-center justify-between mb-4">
-                                <h4 className="font-semibold text-indigo-900">Impurities</h4>
+                                <h4 className="font-semibold text-purple-900">Impurities</h4>
                                 <span className={`text-sm font-bold px-2 py-0.5 rounded-full ${
                                   classificationResult.qualityDetails.impurities < 1 
                                     ? 'bg-emerald-100 text-emerald-700' 
@@ -701,9 +701,9 @@ const WheatClassificationPage = () => {
                               
                               <div className="space-y-2">
                                 <div className="flex justify-between items-center text-xs text-gray-500">
-                                  <span>Clean (<1%)</span>
+                                  <span>Clean ({"\<"} 1%)</span>
                                   <span>Moderate (1-2%)</span>
-                                  <span>High (>2%)</span>
+                                  <span>High ({">"} 2%)</span>
                                 </div>
                                 <div className="relative h-2 bg-gray-100 rounded-full">
                                   <motion.div 
@@ -769,7 +769,7 @@ const WheatClassificationPage = () => {
                           <Button 
                             variant="outline" 
                             onClick={handleClearImage}
-                            className="border-indigo-200 text-indigo-700 hover:bg-indigo-50"
+                            className="border-purple-200 text-purple-700 hover:bg-purple-50"
                           >
                             Analyze New Image
                           </Button>
@@ -779,7 +779,7 @@ const WheatClassificationPage = () => {
                             whileTap={{ scale: 0.95 }}
                           >
                             <Button 
-                              className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white shadow-md"
+                              className="bg-gradient-to-r from-purple-600 to-fuchsia-600 hover:from-purple-700 hover:to-fuchsia-700 text-white shadow-md"
                               onClick={() => {
                                 toast.success("Detailed report downloaded");
                               }}
@@ -797,16 +797,16 @@ const WheatClassificationPage = () => {
           </div>
         </Tabs>
 
-        <Card className="h-fit bg-gradient-to-br from-white to-indigo-50 lg:row-span-2 border border-indigo-100 shadow-md">
-          <CardHeader className="border-b border-indigo-100 bg-indigo-50/50">
-            <CardTitle className="flex items-center text-indigo-900">
-              <Info className="h-5 w-5 mr-2 text-indigo-600" />
+        <Card className="h-fit bg-gradient-to-br from-white to-purple-50 lg:row-span-2 border border-purple-100 shadow-md">
+          <CardHeader className="border-b border-purple-100 bg-purple-50/50">
+            <CardTitle className="flex items-center text-purple-900">
+              <Info className="h-5 w-5 mr-2 text-purple-600" />
               Wheat Quality Insights
             </CardTitle>
           </CardHeader>
           <CardContent className="p-6 space-y-6">
             <div>
-              <h3 className="text-lg font-semibold text-indigo-900 mb-3">Key Quality Factors</h3>
+              <h3 className="text-lg font-semibold text-purple-900 mb-3">Key Quality Factors</h3>
               <ul className="space-y-4">
                 <motion.li 
                   initial={{ x: -10, opacity: 0 }}
@@ -814,11 +814,11 @@ const WheatClassificationPage = () => {
                   transition={{ duration: 0.3, delay: 0.1 }}
                   className="flex items-start"
                 >
-                  <div className="rounded-full bg-gradient-to-br from-amber-100 to-amber-200 p-2 mr-3 shadow-sm">
-                    <Wheat className="h-5 w-5 text-amber-700" />
+                  <div className="rounded-full bg-gradient-to-br from-pink-100 to-pink-200 p-2 mr-3 shadow-sm">
+                    <Wheat className="h-5 w-5 text-pink-700" />
                   </div>
                   <div>
-                    <span className="font-medium text-indigo-900">Protein Content</span>
+                    <span className="font-medium text-purple-900">Protein Content</span>
                     <p className="text-sm text-gray-600 mt-1">
                       Higher protein wheat (12-14%) is ideal for bread flour, creating stronger gluten networks for better dough structure. Lower protein wheat (8-10%) produces softer flour suitable for cakes and pastries.
                     </p>
@@ -835,9 +835,9 @@ const WheatClassificationPage = () => {
                     <X className="h-5 w-5 text-blue-700" />
                   </div>
                   <div>
-                    <span className="font-medium text-indigo-900">Moisture Content</span>
+                    <span className="font-medium text-purple-900">Moisture Content</span>
                     <p className="text-sm text-gray-600 mt-1">
-                      Optimal moisture levels range from 10-12%. Higher moisture (>14%) can lead to mold growth and reduced shelf life, while too dry wheat (<8%) can result in milling difficulties.
+                      Optimal moisture levels range from 10-12%. Higher moisture ({">"} 14%) can lead to mold growth and reduced shelf life, while too dry wheat ({"<"} 8%) can result in milling difficulties.
                     </p>
                   </div>
                 </motion.li>
@@ -852,9 +852,9 @@ const WheatClassificationPage = () => {
                     <Check className="h-5 w-5 text-green-700" />
                   </div>
                   <div>
-                    <span className="font-medium text-indigo-900">Gluten Quality</span>
+                    <span className="font-medium text-purple-900">Gluten Quality</span>
                     <p className="text-sm text-gray-600 mt-1">
-                      Strong gluten (>28%) provides the elasticity needed for artisanal breads and pasta. The quality of gluten affects dough extensibility and gas retention during baking.
+                      Strong gluten ({">"} 28%) provides the elasticity needed for artisanal breads and pasta. The quality of gluten affects dough extensibility and gas retention during baking.
                     </p>
                   </div>
                 </motion.li>
@@ -869,7 +869,7 @@ const WheatClassificationPage = () => {
                     <Filter className="h-5 w-5 text-red-700" />
                   </div>
                   <div>
-                    <span className="font-medium text-indigo-900">Impurity Level</span>
+                    <span className="font-medium text-purple-900">Impurity Level</span>
                     <p className="text-sm text-gray-600 mt-1">
                       Premium wheat should contain less than 1% foreign material. Higher levels of impurities can affect flour color, taste, and may introduce allergens or contaminants.
                     </p>
@@ -878,8 +878,8 @@ const WheatClassificationPage = () => {
               </ul>
             </div>
 
-            <div className="border-t border-indigo-100 pt-6">
-              <h3 className="text-lg font-semibold text-indigo-900 mb-3">AI Analysis Methodology</h3>
+            <div className="border-t border-purple-100 pt-6">
+              <h3 className="text-lg font-semibold text-purple-900 mb-3">AI Analysis Methodology</h3>
               <p className="text-sm text-gray-600 mb-4">
                 Our artificial intelligence system evaluates wheat quality using advanced computer vision and machine learning techniques, trained on thousands of wheat images across various quality grades.
               </p>
@@ -889,13 +889,13 @@ const WheatClassificationPage = () => {
                   initial={{ y: 10, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
                   transition={{ duration: 0.3, delay: 0.1 }}
-                  className="bg-white rounded-md p-3 border border-indigo-100 shadow-sm"
+                  className="bg-white rounded-md p-3 border border-purple-100 shadow-sm"
                 >
                   <div className="flex items-center">
-                    <div className="bg-gradient-to-br from-indigo-100 to-indigo-200 rounded-full w-8 h-8 flex items-center justify-center mr-3 shadow-sm">
-                      <span className="font-bold text-indigo-700">1</span>
+                    <div className="bg-gradient-to-br from-purple-100 to-purple-200 rounded-full w-8 h-8 flex items-center justify-center mr-3 shadow-sm">
+                      <span className="font-bold text-purple-700">1</span>
                     </div>
-                    <span className="text-sm font-medium text-indigo-900">Image capture and preprocessing</span>
+                    <span className="text-sm font-medium text-purple-900">Image capture and preprocessing</span>
                   </div>
                 </motion.div>
                 
@@ -903,13 +903,13 @@ const WheatClassificationPage = () => {
                   initial={{ y: 10, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
                   transition={{ duration: 0.3, delay: 0.2 }}
-                  className="bg-white rounded-md p-3 border border-indigo-100 shadow-sm"
+                  className="bg-white rounded-md p-3 border border-purple-100 shadow-sm"
                 >
                   <div className="flex items-center">
-                    <div className="bg-gradient-to-br from-indigo-100 to-indigo-200 rounded-full w-8 h-8 flex items-center justify-center mr-3 shadow-sm">
-                      <span className="font-bold text-indigo-700">2</span>
+                    <div className="bg-gradient-to-br from-purple-100 to-purple-200 rounded-full w-8 h-8 flex items-center justify-center mr-3 shadow-sm">
+                      <span className="font-bold text-purple-700">2</span>
                     </div>
-                    <span className="text-sm font-medium text-indigo-900">Feature extraction with MobileNetV2 neural network</span>
+                    <span className="text-sm font-medium text-purple-900">Feature extraction with MobileNetV2 neural network</span>
                   </div>
                 </motion.div>
                 
@@ -917,13 +917,13 @@ const WheatClassificationPage = () => {
                   initial={{ y: 10, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
                   transition={{ duration: 0.3, delay: 0.3 }}
-                  className="bg-white rounded-md p-3 border border-indigo-100 shadow-sm"
+                  className="bg-white rounded-md p-3 border border-purple-100 shadow-sm"
                 >
                   <div className="flex items-center">
-                    <div className="bg-gradient-to-br from-indigo-100 to-indigo-200 rounded-full w-8 h-8 flex items-center justify-center mr-3 shadow-sm">
-                      <span className="font-bold text-indigo-700">3</span>
+                    <div className="bg-gradient-to-br from-purple-100 to-purple-200 rounded-full w-8 h-8 flex items-center justify-center mr-3 shadow-sm">
+                      <span className="font-bold text-purple-700">3</span>
                     </div>
-                    <span className="text-sm font-medium text-indigo-900">Multi-parameter quality prediction</span>
+                    <span className="text-sm font-medium text-purple-900">Multi-parameter quality prediction</span>
                   </div>
                 </motion.div>
                 
@@ -931,20 +931,20 @@ const WheatClassificationPage = () => {
                   initial={{ y: 10, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
                   transition={{ duration: 0.3, delay: 0.4 }}
-                  className="bg-white rounded-md p-3 border border-indigo-100 shadow-sm"
+                  className="bg-white rounded-md p-3 border border-purple-100 shadow-sm"
                 >
                   <div className="flex items-center">
-                    <div className="bg-gradient-to-br from-indigo-100 to-indigo-200 rounded-full w-8 h-8 flex items-center justify-center mr-3 shadow-sm">
-                      <span className="font-bold text-indigo-700">4</span>
+                    <div className="bg-gradient-to-br from-purple-100 to-purple-200 rounded-full w-8 h-8 flex items-center justify-center mr-3 shadow-sm">
+                      <span className="font-bold text-purple-700">4</span>
                     </div>
-                    <span className="text-sm font-medium text-indigo-900">Comprehensive quality report generation</span>
+                    <span className="text-sm font-medium text-purple-900">Comprehensive quality report generation</span>
                   </div>
                 </motion.div>
               </div>
             </div>
           </CardContent>
-          <CardFooter className="bg-indigo-50 rounded-b-lg p-4 border-t border-indigo-100">
-            <p className="text-xs text-indigo-700">
+          <CardFooter className="bg-purple-50 rounded-b-lg p-4 border-t border-purple-100">
+            <p className="text-xs text-purple-700">
               This analysis is for reference purposes. Professional lab testing is recommended for commercial applications.
             </p>
           </CardFooter>
@@ -957,27 +957,27 @@ const WheatClassificationPage = () => {
         transition={{ duration: 0.5, delay: 0.2 }}
         className="mb-8"
       >
-        <Card className="bg-gradient-to-br from-white to-purple-50 border-purple-100 shadow-md overflow-hidden">
-          <CardHeader className="border-b border-purple-100 bg-purple-50/50">
-            <CardTitle className="text-purple-900">About Our Wheat Classification Technology</CardTitle>
+        <Card className="bg-gradient-to-br from-white to-fuchsia-50 border-fuchsia-100 shadow-md overflow-hidden">
+          <CardHeader className="border-b border-fuchsia-100 bg-fuchsia-50/50">
+            <CardTitle className="text-fuchsia-900">About Our Wheat Classification Technology</CardTitle>
           </CardHeader>
           <CardContent className="p-6">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div className="space-y-3">
-                <div className="h-14 w-14 rounded-xl bg-gradient-to-br from-purple-500 to-indigo-600 flex items-center justify-center shadow-lg mb-4">
+                <div className="h-14 w-14 rounded-xl bg-gradient-to-br from-fuchsia-500 to-purple-600 flex items-center justify-center shadow-lg mb-4">
                   <Wheat className="h-8 w-8 text-white" />
                 </div>
-                <h3 className="text-lg font-semibold text-purple-900">Advanced Classification</h3>
+                <h3 className="text-lg font-semibold text-fuchsia-900">Advanced Classification</h3>
                 <p className="text-gray-700">
                   Our system achieves 94% accuracy in categorizing wheat quality, enabling farmers and processors to make informed decisions about their harvest.
                 </p>
               </div>
               
               <div className="space-y-3">
-                <div className="h-14 w-14 rounded-xl bg-gradient-to-br from-amber-500 to-amber-600 flex items-center justify-center shadow-lg mb-4">
+                <div className="h-14 w-14 rounded-xl bg-gradient-to-br from-pink-500 to-pink-600 flex items-center justify-center shadow-lg mb-4">
                   <ImageIcon className="h-8 w-8 text-white" />
                 </div>
-                <h3 className="text-lg font-semibold text-purple-900">Visual Analysis</h3>
+                <h3 className="text-lg font-semibold text-fuchsia-900">Visual Analysis</h3>
                 <p className="text-gray-700">
                   The system works with standard photographs, with best results achieved using well-lit images showing multiple wheat kernels against a contrasting background.
                 </p>
@@ -987,7 +987,7 @@ const WheatClassificationPage = () => {
                 <div className="h-14 w-14 rounded-xl bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center shadow-lg mb-4">
                   <Check className="h-8 w-8 text-white" />
                 </div>
-                <h3 className="text-lg font-semibold text-purple-900">Industry Applications</h3>
+                <h3 className="text-lg font-semibold text-fuchsia-900">Industry Applications</h3>
                 <p className="text-gray-700">
                   Used by farmers, grain traders, flour mills, and food processors to rapidly assess wheat quality and determine optimal use cases for different wheat varieties.
                 </p>
