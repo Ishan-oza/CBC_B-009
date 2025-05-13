@@ -3,7 +3,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
-import { Home, LogIn, UserPlus, Info, Database, Image } from 'lucide-react';
+import { Home, LogIn, UserPlus, Info, Database, Image, ChartLine } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 
 import LandingPage from "./pages/LandingPage";
@@ -13,6 +13,7 @@ import AboutPage from "./pages/AboutPage";
 import Index from "./pages/Index";
 import SmartInventoryPage from "./pages/SmartInventoryPage";
 import WheatClassificationPage from "./pages/WheatClassificationPage";
+import SalesForecastPage from "./pages/SalesForecastPage";
 import NotFound from "./pages/NotFound";
 import { TooltipProvider } from "@/components/ui/tooltip";
 
@@ -35,6 +36,9 @@ const Navigation = () => {
             </Link>
             <Link to="/smart-inventory" className="flex items-center gap-1 text-gray-600 hover:text-primary transition">
               <Database className="h-5 w-5" /> Smart Inventory
+            </Link>
+            <Link to="/sales-forecast" className="flex items-center gap-1 text-gray-600 hover:text-primary transition">
+              <ChartLine className="h-5 w-5" /> Sales Forecast
             </Link>
             <Link to="/wheat-classification" className="flex items-center gap-1 text-gray-600 hover:text-primary transition">
               <Image className="h-5 w-5" /> Wheat Quality
@@ -81,6 +85,7 @@ const App = () => (
             <Route path="/" element={<LandingPage />} />
             <Route path="/dashboard" element={<Index />} />
             <Route path="/smart-inventory" element={<SmartInventoryPage />} />
+            <Route path="/sales-forecast" element={<SalesForecastPage />} />
             <Route path="/wheat-classification" element={<WheatClassificationPage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/signup" element={<SignupPage />} />
