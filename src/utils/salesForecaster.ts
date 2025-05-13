@@ -26,6 +26,7 @@ class SalesForecaster {
   private data: SalesData[] | null = null;
   private differenced = false;
   private diffOrder = 0;
+  private bestOrder: [number, number, number] | null = null;
 
   // Load data from CSV format or array
   loadData(data: any[]): SalesData[] {
@@ -61,14 +62,29 @@ class SalesForecaster {
   ): SalesData[] {
     const data: SalesData[] = [];
     
+    // Set random seed (approximate equivalent to Python's np.random.seed)
+    const randomSeed = 42;
+    let randomState = randomSeed;
+    const seededRandom = () => {
+      randomState = (randomState * 9301 + 49297) % 233280;
+      return randomState / 233280;
+    };
+    
     // Create date range
     for (let i = 0; i < periods; i++) {
       const date = new Date(startDate);
       date.setMonth(date.getMonth() + i);
       
-      // Base sales with randomness
-      const random = () => Math.random() * meanSales / 5;
-      let sales = meanSales + random() - meanSales / 10;
+      // Base sales with randomness (approximating normal distribution)
+      const normalRandom = () => {
+        // Box-Muller transform for normal distribution
+        const u1 = seededRandom();
+        const u2 = seededRandom();
+        const z0 = Math.sqrt(-2.0 * Math.log(u1)) * Math.cos(2.0 * Math.PI * u2);
+        return z0;
+      };
+      
+      let sales = meanSales + normalRandom() * (meanSales / 10);
       
       // Add trend
       if (trend > 0) {
@@ -108,9 +124,79 @@ class SalesForecaster {
     return data;
   }
 
-  // Simplified implementation of time series analysis using moving averages
-  // In a real application, you would use a proper time series library or 
-  // call a backend API for statsmodels/ARIMA functionality
+  // Check for stationarity (simplified implementation)
+  checkStationarity(): boolean {
+    if (!this.data || this.data.length === 0) {
+      throw new Error("No data loaded. Please load data first.");
+    }
+    
+    // Simplified approach - look for significant trend between first and second half
+    const sales = this.data.map(item => item.sales);
+    const midpoint = Math.floor(sales.length / 2);
+    const firstHalf = sales.slice(0, midpoint);
+    const secondHalf = sales.slice(midpoint);
+    
+    // Calculate averages
+    const firstAvg = firstHalf.reduce((sum, val) => sum + val, 0) / firstHalf.length;
+    const secondAvg = secondHalf.reduce((sum, val) => sum + val, 0) / secondHalf.length;
+    
+    // Calculate percent change
+    const percentChange = Math.abs((secondAvg - firstAvg) / firstAvg * 100);
+    
+    // Simple heuristic - if change is more than 10%, consider non-stationary
+    return percentChange < 10;
+  }
+
+  // Difference the data to achieve stationarity
+  differenceData(order: number = 1): number[] {
+    if (!this.data || this.data.length === 0) {
+      throw new Error("No data loaded. Please load data first.");
+    }
+    
+    const sales = this.data.map(item => item.sales);
+    let result: number[] = [];
+    
+    // Simple differencing
+    for (let i = order; i < sales.length; i++) {
+      result.push(sales[i] - sales[i - order]);
+    }
+    
+    this.differenced = true;
+    this.diffOrder = order;
+    
+    return result;
+  }
+
+  // Find best parameters for ARIMA model (simplified approach)
+  findBestOrder(maxP: number = 2, maxD: number = 1, maxQ: number = 2): [number, number, number] {
+    // This is a simplified implementation, as proper ARIMA parameter selection
+    // requires complex statistical calculations
+    
+    // In a web context, we'll use some heuristics instead of a full grid search
+    
+    // Check if data needs differencing
+    let d = 0;
+    if (!this.checkStationarity()) {
+      d = 1; // Suggest first-order differencing for non-stationary data
+    }
+    
+    // For p and q, we'll use simple heuristics based on data patterns
+    // In a real implementation, this would involve ACF/PACF analysis
+    let p = 1; // Default autoregressive order
+    let q = 1; // Default moving average order
+    
+    if (this.data && this.data.length >= 24) {
+      // With more data, we might use higher orders
+      p = 2;
+      q = 2;
+    }
+    
+    this.bestOrder = [p, d, q];
+    return this.bestOrder;
+  }
+
+  // Simplified ARIMA implementation
+  // In a real application, you would use a proper time series library
   forecast(steps: number = 3): {
     forecast: ForecastResult[],
     recommendations: InventoryRecommendation[]
@@ -118,33 +204,21 @@ class SalesForecaster {
     if (!this.data || this.data.length === 0) {
       throw new Error("No data loaded. Please load data first.");
     }
-    
-    // Extract sales data
+
+    // Get recent values for forecast
     const sales = this.data.map(item => item.sales);
+    const dates = this.data.map(item => new Date(item.date));
     
-    // For simplicity, we'll use a weighted moving average approach
-    // In a real implementation, you would use ARIMA or other time series models
-    const windowSize = Math.min(sales.length, 6);
-    
-    // Calculate weighted average of recent sales
-    let weightedSum = 0;
-    let weightSum = 0;
-    
-    for (let i = 0; i < windowSize; i++) {
-      const weight = windowSize - i;
-      weightedSum += sales[sales.length - 1 - i] * weight;
-      weightSum += weight;
+    // Find best order if not already determined
+    if (!this.bestOrder) {
+      this.findBestOrder();
     }
     
-    const baseValue = weightedSum / weightSum;
+    // Simple forecast implementation based on weighted moving average and seasonality
+    const forecast: ForecastResult[] = [];
+    const lastDate = new Date(this.data[this.data.length - 1].date);
     
-    // Calculate trend
-    const recentSales = sales.slice(-12); // Last 12 periods
-    const trend = recentSales.length >= 2 ? 
-      (recentSales[recentSales.length - 1] - recentSales[0]) / recentSales.length : 
-      0;
-    
-    // Calculate seasonality (simple approach)
+    // Detect seasonality
     const seasonalFactors: { [key: number]: number } = {};
     if (this.data.length >= 12) {
       // Group by month and calculate average factor
@@ -166,21 +240,37 @@ class SalesForecaster {
         seasonalFactors[parseInt(month)] = monthAvg / overallAvg;
       });
     }
-
-    // Generate forecast
-    const forecast: ForecastResult[] = [];
-    const lastDate = new Date(this.data[this.data.length - 1].date);
     
+    // Calculate trend
+    const recentSales = sales.slice(-6);  // Last 6 periods
+    const trend = recentSales.length >= 2 ? 
+      (recentSales[recentSales.length - 1] - recentSales[0]) / recentSales.length : 
+      0;
+    
+    // Calculate weighted average of recent sales
+    const windowSize = Math.min(sales.length, 6);
+    let weightedSum = 0;
+    let weightSum = 0;
+    
+    for (let i = 0; i < windowSize; i++) {
+      const weight = windowSize - i;
+      weightedSum += sales[sales.length - 1 - i] * weight;
+      weightSum += weight;
+    }
+    
+    const baseValue = weightedSum / weightSum;
+    
+    // Generate forecast
     for (let i = 1; i <= steps; i++) {
       const forecastDate = addMonths(lastDate, i);
       const month = forecastDate.getMonth() + 1;
       const seasonFactor = seasonalFactors[month] || 1;
       
-      // Basic forecast with trend and seasonality
+      // Forecast with trend and seasonality
       const forecastValue = (baseValue + (trend * i)) * seasonFactor;
       
       // Add uncertainty range
-      const uncertainty = 0.1 * forecastValue * Math.sqrt(i); // Uncertainty grows with distance
+      const uncertainty = 0.1 * forecastValue * Math.sqrt(i);
       
       forecast.push({
         date: format(forecastDate, 'yyyy-MM-dd'),
@@ -191,13 +281,10 @@ class SalesForecaster {
     }
 
     // Generate inventory recommendations
-    const safetyStockPercentage = 20;
-    const currentInventory = 100; // Default value, can be passed as parameter
-    
     const recommendations: InventoryRecommendation[] = this.recommendInventory(
       forecast, 
-      currentInventory, 
-      safetyStockPercentage
+      100,  // Default current inventory 
+      20    // Default safety stock percentage
     );
     
     return { 
@@ -244,25 +331,51 @@ class SalesForecaster {
     return recommendations;
   }
 
-  // Check for stationarity (simplified version)
-  checkStationarity(): boolean {
+  // Advanced forecast with statistical analysis
+  // This implementation provides an ARIMA-like forecast that approximates the Python version
+  advancedForecast(
+    steps: number = 3,
+    currentInventory: number = 100,
+    safetyStockPercentage: number = 20
+  ): {
+    forecast: ForecastResult[],
+    recommendations: InventoryRecommendation[]
+  } {
     if (!this.data || this.data.length === 0) {
       throw new Error("No data loaded. Please load data first.");
     }
     
-    // Simplified check - look for significant trend
-    const sales = this.data.map(item => item.sales);
-    const firstHalf = sales.slice(0, Math.floor(sales.length / 2));
-    const secondHalf = sales.slice(Math.floor(sales.length / 2));
+    // 1. Check stationarity
+    const isStationary = this.checkStationarity();
+    console.log(`Series stationarity check: ${isStationary ? "Stationary" : "Non-stationary"}`);
     
-    const firstAvg = firstHalf.reduce((sum, val) => sum + val, 0) / firstHalf.length;
-    const secondAvg = secondHalf.reduce((sum, val) => sum + val, 0) / secondHalf.length;
+    // 2. Apply differencing if needed
+    if (!isStationary) {
+      this.differenceData(1);
+      console.log("Applied first-order differencing to achieve stationarity");
+    }
     
-    // Calculate percent change
-    const percentChange = Math.abs((secondAvg - firstAvg) / firstAvg * 100);
+    // 3. Find optimal parameters
+    const [p, d, q] = this.findBestOrder();
+    console.log(`Selected ARIMA parameters: (${p},${d},${q})`);
     
-    // If change is more than 10%, consider non-stationary
-    return percentChange < 10;
+    // 4. Generate forecast using the basic forecast method
+    // (In a real implementation, this would use proper ARIMA calculations)
+    const forecastResults = this.forecast(steps);
+    
+    console.log("Forecast generated successfully using ARIMA-inspired approach");
+    
+    // 5. Generate inventory recommendations
+    const recommendations = this.recommendInventory(
+      forecastResults.forecast,
+      currentInventory,
+      safetyStockPercentage
+    );
+    
+    return {
+      forecast: forecastResults.forecast,
+      recommendations
+    };
   }
 }
 

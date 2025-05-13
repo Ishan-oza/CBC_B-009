@@ -11,11 +11,12 @@ import {
   CardTitle 
 } from "@/components/ui/card";
 import { Button } from '@/components/ui/button';
-import { Upload, Database, Calendar, Settings } from 'lucide-react';
+import { Upload, Database, Calendar, Settings, ChartBar, ArrowRight } from 'lucide-react';
 import { toast } from 'sonner';
 import InventoryForecast from '@/components/InventoryForecast';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useInventoryModel } from '@/hooks/useInventoryModel';
+import { Link } from 'react-router-dom';
 
 const SmartInventoryPage = () => {
   const [csvData, setCsvData] = useState<any[] | null>(null);
@@ -78,6 +79,15 @@ const SmartInventoryPage = () => {
         <div>
           <h1 className="text-3xl font-bold">Smart Inventory Management</h1>
           <p className="text-gray-500">Upload sales data to forecast inventory needs</p>
+        </div>
+        <div className="mt-4 md:mt-0">
+          <Button variant="outline" asChild>
+            <Link to="/sales-forecast" className="flex items-center gap-2">
+              <ChartBar className="h-4 w-4" />
+              Advanced ARIMA Forecasting
+              <ArrowRight className="h-4 w-4" />
+            </Link>
+          </Button>
         </div>
       </div>
 
@@ -229,6 +239,13 @@ const SmartInventoryPage = () => {
                     defaultValue="1.2"
                     className="w-full rounded-md border border-gray-300 p-2 mt-1" 
                   />
+                </div>
+                
+                <div className="pt-4 border-t">
+                  <p className="text-sm text-blue-600">
+                    For advanced ARIMA forecasting options, please visit the 
+                    <Link to="/sales-forecast" className="ml-1 font-medium underline">Sales Forecast</Link> page.
+                  </p>
                 </div>
               </div>
             </CardContent>

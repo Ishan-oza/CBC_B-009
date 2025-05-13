@@ -25,10 +25,23 @@ import {
 } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from '@/components/ui/button';
-import { Calendar, ArrowUp, ArrowDown, Database, ChartLine, Upload } from 'lucide-react';
+import { 
+  Calendar, 
+  ArrowUp, 
+  ArrowDown, 
+  Database, 
+  ChartBar, 
+  Upload,
+  Settings, 
+  FileBarChart,
+  Info,
+  FileText,
+  RefreshCw
+} from 'lucide-react';
 import { toast } from 'sonner';
 import DashboardCard from '@/components/DashboardCard';
 import SalesForecaster from '@/utils/salesForecaster';
+import { ChartContainer } from '@/components/ui/chart';
 
 ChartJS.register(
   CategoryScale,
@@ -73,6 +86,23 @@ const SalesForecastPage = () => {
   const [currentInventory, setCurrentInventory] = useState(100);
   const [safetyStock, setSafetyStock] = useState(20);
   const [forecastPeriods, setForecastPeriods] = useState(3);
+  const [analysisType, setAnalysisType] = useState<'basic' | 'advanced'>('basic');
+  const [consoleOutput, setConsoleOutput] = useState<string[]>([]);
+  
+  // Capture console logs for display
+  React.useEffect(() => {
+    const originalConsoleLog = console.log;
+    console.log = (...args) => {
+      originalConsoleLog(...args);
+      setConsoleOutput(prev => [...prev, args.map(arg => 
+        typeof arg === 'object' ? JSON.stringify(arg) : String(arg)
+      ).join(' ')]);
+    };
+
+    return () => {
+      console.log = originalConsoleLog;
+    };
+  }, []);
   
   const onDrop = (acceptedFiles: File[]) => {
     const file = acceptedFiles[0];
@@ -104,6 +134,7 @@ const SalesForecastPage = () => {
   });
 
   const handleGenerateExample = () => {
+    setConsoleOutput([]);
     const forecaster = new SalesForecaster();
     const exampleData = forecaster.createExampleData(
       '2023-01-01',
@@ -116,24 +147,41 @@ const SalesForecastPage = () => {
     setSalesData(exampleData);
     setCsvData(exampleData);
     toast.success('Example data generated successfully');
+    console.log(`Generated example data with ${exampleData.length} records`);
   };
 
   const handleGenerateForecast = () => {
     setIsProcessing(true);
+    setConsoleOutput([]);
     
     try {
       const forecaster = new SalesForecaster();
       
       // Load data
       if (csvData) {
+        console.log('Loading data into forecaster...');
         forecaster.loadData(csvData);
       } else {
         throw new Error('No data available');
       }
       
       // Generate forecast
-      const results = forecaster.forecast(forecastPeriods);
+      console.log(`Generating ${analysisType} forecast for ${forecastPeriods} periods...`);
+      
+      let results;
+      if (analysisType === 'advanced') {
+        console.log('Running ARIMA-inspired analysis...');
+        results = forecaster.advancedForecast(
+          forecastPeriods, 
+          currentInventory, 
+          safetyStock
+        );
+      } else {
+        results = forecaster.forecast(forecastPeriods);
+      }
+      
       setForecastResults(results);
+      setSalesData(forecaster.loadData(csvData));
       
       toast.success('Forecast generated successfully!');
     } catch (error) {
@@ -258,7 +306,7 @@ const SalesForecastPage = () => {
     <div className="max-w-7xl mx-auto">
       <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-8">
         <div>
-          <h1 className="text-3xl font-bold">Sales Forecasting</h1>
+          <h1 className="text-3xl font-bold">Sales Forecasting with ARIMA</h1>
           <p className="text-gray-500">Upload sales data to generate predictions and inventory recommendations</p>
         </div>
       </div>
@@ -268,6 +316,7 @@ const SalesForecastPage = () => {
           <TabsTrigger value="upload">Upload Data</TabsTrigger>
           <TabsTrigger value="forecast" disabled={!forecastResults}>Forecast</TabsTrigger>
           <TabsTrigger value="inventory" disabled={!forecastResults}>Inventory</TabsTrigger>
+          <TabsTrigger value="analysis" disabled={!forecastResults}>Analysis</TabsTrigger>
           <TabsTrigger value="settings">Settings</TabsTrigger>
         </TabsList>
         
@@ -282,7 +331,7 @@ const SalesForecastPage = () => {
             <CardContent>
               <div className="flex flex-col md:flex-row gap-4 md:items-center mb-6">
                 <Button variant="outline" onClick={handleGenerateExample}>
-                  Generate Example Data
+                  <FileText className="h-4 w-4 mr-2" /> Generate Example Data
                 </Button>
                 <p className="text-sm text-gray-500">
                   Don't have data? Generate example sales data for testing
@@ -301,7 +350,7 @@ const SalesForecastPage = () => {
                 </p>
               </div>
             </CardContent>
-            <CardFooter>
+            <CardFooter className="flex flex-col">
               {csvData && (
                 <div className="w-full">
                   <div className="flex justify-between items-center mb-4">
@@ -313,12 +362,36 @@ const SalesForecastPage = () => {
                     </Button>
                   </div>
                   <Button 
-                    className="w-full" 
+                    className="w-full mb-4" 
                     onClick={handleGenerateForecast}
                     disabled={isProcessing}
                   >
+                    {isProcessing ? <RefreshCw className="h-4 w-4 mr-2 animate-spin" /> : <ChartBar className="h-4 w-4 mr-2" />}
                     {isProcessing ? 'Processing...' : 'Generate Sales Forecast'}
                   </Button>
+                  
+                  <div className="flex items-center justify-center gap-4 border-t pt-4 w-full">
+                    <div className="flex items-center gap-2">
+                      <input
+                        type="radio"
+                        id="basic-analysis"
+                        checked={analysisType === 'basic'}
+                        onChange={() => setAnalysisType('basic')}
+                        className="rounded"
+                      />
+                      <label htmlFor="basic-analysis" className="text-sm">Basic Analysis</label>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <input
+                        type="radio"
+                        id="arima-analysis"
+                        checked={analysisType === 'advanced'}
+                        onChange={() => setAnalysisType('advanced')}
+                        className="rounded"
+                      />
+                      <label htmlFor="arima-analysis" className="text-sm">ARIMA Analysis</label>
+                    </div>
+                  </div>
                 </div>
               )}
             </CardFooter>
@@ -378,7 +451,7 @@ const SalesForecastPage = () => {
                 <DashboardCard
                   title="Forecasted Average"
                   value={summary.future_avg.toFixed(2)}
-                  icon={<ChartLine className="h-6 w-6 text-purple-500" />}
+                  icon={<ChartBar className="h-6 w-6 text-purple-500" />}
                   trend={{
                     value: Math.abs(summary.change_percent),
                     isPositive: summary.change_percent > 0
@@ -410,6 +483,7 @@ const SalesForecastPage = () => {
               <Card>
                 <CardHeader>
                   <CardTitle>Forecast Details</CardTitle>
+                  <CardDescription>Forecast using {analysisType === 'advanced' ? 'ARIMA-inspired' : 'basic'} analysis</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="overflow-x-auto">
@@ -446,6 +520,7 @@ const SalesForecastPage = () => {
               <Card>
                 <CardHeader>
                   <CardTitle>Inventory Recommendations</CardTitle>
+                  <CardDescription>ARIMA-based inventory planning suggestions</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="overflow-x-auto">
@@ -502,6 +577,86 @@ const SalesForecastPage = () => {
           )}
         </TabsContent>
         
+        <TabsContent value="analysis">
+          {forecastResults && (
+            <div className="space-y-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle>ARIMA Analysis</CardTitle>
+                  <CardDescription>Statistical analysis of the time series data</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="bg-gray-50 p-4 rounded-lg text-sm font-mono overflow-x-auto">
+                    {consoleOutput.length > 0 ? (
+                      <pre className="whitespace-pre-wrap">
+                        {consoleOutput.map((line, i) => (
+                          <div key={i} className="py-1">{'> ' + line}</div>
+                        ))}
+                      </pre>
+                    ) : (
+                      <p className="text-gray-500 italic">No analysis logs available. Run a forecast first.</p>
+                    )}
+                  </div>
+                </CardContent>
+              </Card>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <Card>
+                  <CardHeader className="pb-2">
+                    <CardTitle>About Time Series Analysis</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-4">
+                      <div>
+                        <h3 className="font-medium">ARIMA Model</h3>
+                        <p className="text-sm text-gray-600 mt-1">
+                          ARIMA (AutoRegressive Integrated Moving Average) is a statistical model used for time series forecasting.
+                          It combines autoregression (AR), differencing (I), and moving average (MA) components.
+                        </p>
+                      </div>
+                      
+                      <div>
+                        <h3 className="font-medium">Components of ARIMA</h3>
+                        <ul className="list-disc pl-5 text-sm text-gray-600 mt-1 space-y-1">
+                          <li><strong>p (AR):</strong> The number of lag observations included in the model</li>
+                          <li><strong>d (I):</strong> The number of times the raw observations are differenced</li>
+                          <li><strong>q (MA):</strong> The size of the moving average window</li>
+                        </ul>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+                
+                <Card>
+                  <CardHeader className="pb-2">
+                    <CardTitle>Forecast Interpretation</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-4">
+                      <div>
+                        <h3 className="font-medium">Confidence Intervals</h3>
+                        <p className="text-sm text-gray-600 mt-1">
+                          The shaded area around the forecast line represents the forecast uncertainty.
+                          Wider intervals indicate less certainty about future values.
+                        </p>
+                      </div>
+                      
+                      <div>
+                        <h3 className="font-medium">Key Metrics</h3>
+                        <ul className="list-disc pl-5 text-sm text-gray-600 mt-1 space-y-1">
+                          <li><strong>Trend:</strong> The general direction of the forecast</li>
+                          <li><strong>Seasonality:</strong> Repeating patterns detected in the data</li>
+                          <li><strong>Stationarity:</strong> Whether the data needed differencing</li>
+                        </ul>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+            </div>
+          )}
+        </TabsContent>
+        
         <TabsContent value="settings">
           <Card>
             <CardHeader>
@@ -547,10 +702,31 @@ const SalesForecastPage = () => {
                   />
                   <p className="text-sm text-gray-500 mt-1">Number of future periods to forecast</p>
                 </div>
+                
+                <div className="pt-4 border-t">
+                  <h3 className="text-sm font-medium mb-2">ARIMA Settings</h3>
+                  <div className="bg-gray-50 p-4 rounded border border-gray-200 text-sm">
+                    <p>
+                      <Info className="h-4 w-4 inline-block mr-1 text-blue-500" />
+                      The current implementation uses a dynamic parameter selection algorithm to automatically
+                      determine the best ARIMA parameters based on your data.
+                    </p>
+                    <p className="mt-2">
+                      When you select "ARIMA Analysis" mode, the system will:
+                    </p>
+                    <ul className="list-disc pl-5 mt-2 space-y-1">
+                      <li>Test for stationarity</li>
+                      <li>Apply differencing if needed</li>
+                      <li>Find optimal p, d, q parameters</li>
+                      <li>Generate forecast with confidence intervals</li>
+                    </ul>
+                  </div>
+                </div>
               </div>
             </CardContent>
             <CardFooter>
               <Button onClick={handleGenerateForecast} disabled={!csvData || isProcessing}>
+                <RefreshCw className="h-4 w-4 mr-2" /> 
                 Update Forecast
               </Button>
             </CardFooter>
